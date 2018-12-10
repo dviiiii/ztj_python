@@ -1,12 +1,12 @@
 from django.urls import path
 
-from .. import views
+import  hqdba.controller.login as login
 urlpatterns = [
-    path('login/', views.index, name='index'),
+    path('login/', login.index, name='index'),
 
-    path( '<int:question_id>/', views.detail, name='detail' ),
-    # ex: /polls/5/results/
-    path( '<int:question_id>/results/', views.results, name='results' ),
-    # ex: /polls/5/vote/
-    path( '<int:question_id>/vote/', views.vote, name='vote' ),
+    # path( '<int:question_id>/', login.detail, name='detail' ),
+    # # ex: /polls/5/results/
+    # path( '<int:question_id>/results/', login.results, name='results' ),
+    # # ex: /polls/5/vote/
+    # path( '<int:question_id>/vote/', login.vote, name='vote' ),
 ]
