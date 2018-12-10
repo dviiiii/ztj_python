@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('hqdba/', include('hqdba.urls')),
+    path('hqdba/', include('hqdba.router.router')),
     path('admin/', admin.site.urls),
 ]
