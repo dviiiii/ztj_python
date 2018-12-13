@@ -4,6 +4,7 @@ import  hqdba.controller.login as login
 import  hqdba.controller.hqdba as hqdba
 urlpatterns = [
     path('login/', login.index, name='index'),
+    path('test/', hqdba.test, name='test'),
     path('hqdba/addConfig', hqdba.addConfig, name='addConfig'),
     path('hqdba/queryConfig', hqdba.queryConfig, name='queryConfig'),
 

@@ -44,7 +44,6 @@ def insert_data(dbName,data_dict):
         conn.commit()
         cursor.close()
 
-        print("=====  插入成功  =====")
         return 0
 
     except Exception as e:
