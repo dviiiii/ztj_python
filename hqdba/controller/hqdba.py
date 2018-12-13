@@ -1,5 +1,4 @@
 import json
-import numpy as np
 import hqdba.api.hqdba as hqdbaApi
 
 from django.http import JsonResponse
