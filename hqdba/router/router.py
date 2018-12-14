@@ -7,6 +7,9 @@ urlpatterns = [
     path('test/', hqdba.test, name='test'),
     path('hqdba/addConfig', hqdba.addConfig, name='addConfig'),
     path('hqdba/queryConfig', hqdba.queryConfig, name='queryConfig'),
+    path('hqdba/queryAllTables', hqdba.queryAllTables, name='queryAllTables'),
+    path('hqdba/queryOneTableCol', hqdba.queryOneTableCol, name='queryOneTableCol'),
+    path('hqdba/queryOneTable', hqdba.queryOneTable, name='queryOneTable'),
 
     # path( '<int:question_id>/', login.detail, name='detail' ),
     # # ex: /polls/5/results/

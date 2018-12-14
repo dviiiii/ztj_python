@@ -1,7 +1,7 @@
-from ..model.model_user import User
-import hqdba.db.mysql as db_mysql
+import hqdba.db.Db as db
 
 def queryPassword(pw):
-    a = db_mysql.query("select * from hqdba_user")
+    DB = db.Db()
+    a = DB.executeSql("select * from hqdba_user")
 
     return a
