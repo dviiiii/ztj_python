@@ -33,9 +33,11 @@ class Masking(object):
         return str_start + str_end
 
     def getdistrictcode(cls):
-        with open( DC_PATH ) as file:
-            data = file.read()
-        districtlist = data.split( '\n' )
+        global file_data
+        if not file_data:
+            with open( DC_PATH ) as file:
+                file_data = file.read()
+        districtlist = file_data.split( '\n' )
         state = ''
         city = ''
         district = ''
@@ -49,7 +51,6 @@ class Masking(object):
                 district = node[14:].strip()
                 code = node[0:6]
                 codelist.append({"state":state,"city":city,"district":district,"code":code})
-
     # 随机生成身份证号
     def getGennerator(cls):
         global codelist
