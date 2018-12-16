@@ -81,3 +81,13 @@ def queryOneTable(request):
     data["list"] = tbs
 
     return JsonResponse( data )
+
+# 根据表名查询表字段
+def toMasking(request):
+    json_result = json.loads( request.body )
+    data = {}
+    global config_temp
+    tbs = hqdbaApi.toMasking(config_temp, json_result)
+    data["list"] = tbs
+
+    return JsonResponse( data )

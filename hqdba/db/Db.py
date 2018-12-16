@@ -19,7 +19,7 @@ class Db(object):
 
     def executeSql(self, sql):
         db = self.conn
-
+        print(sql)
         # 使用cursor()方法获取操作游标 pymysql.cursors.DictCursor
         cursor = self.cursor
         results = ""
@@ -34,12 +34,9 @@ class Db(object):
             # Rollback in case there is any error
             db.rollback()
 
-        # 关闭数据库连接
-        db.close()
         return results
 
     def insert_data(self,dbName,data_dict):
-
         try:
 
             data_values = "(" + "%s," * (len(data_dict)) + ")"
@@ -54,11 +51,16 @@ class Db(object):
             params = dataTuple
             cursor.execute(sql, params)
             conn.commit()
-            cursor.close()
-
             return 0
 
         except Exception as e:
             print("********  插入失败    ********")
             print(e)
             return 1
+
+
+    def close(self):
+
+        # 关闭数据库连接
+        db = self.conn
+        db.close()
