@@ -64,10 +64,11 @@ def masking_tosql(config, json_result):
     instr = ""
     for i in result:
         new_value = getattr(Masking, masking_type)(masking_other)
-        whenstr += "WHEN %s THEN '%s' " % (str(i[masking_key]), new_value)
-        instr += str(i[masking_key]) + ","
+        id = "'"+str(i[masking_key])+"'" if type(i[masking_key]) == int else str(i[masking_key])
+        whenstr += "WHEN %s THEN '%s' " % (id, new_value)
+        instr += id + ","
 
-    DB.executeSql( "update %s set %s = CASE %s %s END where id in (%s)" % (tableName, tableCol, masking_key,whenstr, instr[0:-1]) )
+    DB.executeSql( "update %s set %s = CASE %s %s END where %s in (%s)" % (tableName, tableCol, masking_key,whenstr,masking_key, instr[0:-1]) )
 
     DB.close()
     return result
