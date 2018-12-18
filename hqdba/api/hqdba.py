@@ -21,7 +21,10 @@ def queryConfig(id = None):
 
 def queryAllTables(config):
     DB = db.Db(config)
-    result = DB.executeSql("show tables")
+    if(config["db_type"] == 'oracle'):
+        result = DB.executeSql("select * from tab")
+    else:
+        result = DB.executeSql("show tables")
     return result
 
 def queryOneTableCol(config, tableName):

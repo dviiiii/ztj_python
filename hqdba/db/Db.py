@@ -1,5 +1,6 @@
 import hqdba.config.mysql_config as mysql_config
 import pymysql
+import cx_Oracle as oracle
 # 打开数据库连接
 default_config = mysql_config.default_config()
 
@@ -10,7 +11,10 @@ class Db(object):
             self.conn = pymysql.connect(config["db_host"], config["db_user"], config["db_password"], config["db_name"])
             self.cursor = self.conn.cursor(pymysql.cursors.DictCursor)
         elif config["db_type"] == 'oracle':
-            print('oracle')
+            print('%s/%s@%s:%s/%s' %(config["db_user"], config["db_password"],config["db_host"],config["db_port"],config["db_name"]))
+            dsnStr= oracle.makedsn(config["db_host"], config["db_port"], config["db_name"])
+            self.conn = oracle.connect(user=config["db_user"], password=config["db_password"], dsn=dsnStr)
+            self.cursor = self.conn.cursor()
         elif config["db_type"] == 'sqlserver':
             print('sqlserver')
         else:
@@ -27,6 +31,7 @@ class Db(object):
         try:
             # 执行sql语句
             cursor.execute(sql)
+            # results = cursor.fetchall()
             results = cursor.fetchall()
             # 提交到数据库执行
             db.commit()
@@ -64,3 +69,17 @@ class Db(object):
         # 关闭数据库连接
         db = self.conn
         db.close()
+
+    def makedict(self, cursor):
+        result = cursor.fetchall()
+        cur_desc = cursor.description
+        colum = {}
+        # print(cur_desc.__len__())
+        for i in range(cur_desc.__len__()):
+            for n in range(result.__len__()):
+                try:
+                    rs = result[n][i]
+                except Exception as e:
+                    print(e)
+            colum[cur_desc[i][0]] = rs
+        return colum

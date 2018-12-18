@@ -54,6 +54,7 @@ def queryAllTables(request):
     data = {}
     tbs = hqdbaApi.queryAllTables(config_temp)
     result = []
+    print(tbs)
     for i in tbs:
         result.extend(i.values())
     data["list"] = result
