@@ -4,11 +4,13 @@ import hqdba.lib.Masking as ms
 def addTest(params):
     DB = db.Db().strategy
     result = DB.insert_data("hqdba_db_test", params)
+    DB.close()
     return result
 
 def addConfig(params):
     DB = db.Db().strategy
     result = DB.insert_data("hqdba_db_config", params)
+    DB.close()
     return result
 
 #查询数据库实例配置
@@ -18,24 +20,27 @@ def queryConfig(id = None):
     if id != None:
         where_sql = where_sql + ' and id = ' + id
     result = DB.executeSql("select * from hqdba_db_config" + where_sql)
+    DB.close()
     return result
 
 #查询表名
 def queryAllTables(config):
     DB = db.Db(config).strategy
     result = DB.queryAllTables()
-
+    DB.close()
     return result
 
 #根据表名查询列名
 def queryOneTableCol(config, tableName):
     DB = db.Db(config).strategy
     result = DB.queryOneTableCol(tableName)
+    DB.close()
     return result
 
 def queryOneTable(config, tableName):
     DB = db.Db(config).strategy
     result = DB.queryOneTable(tableName)
+    DB.close()
     return result
 
 def toMasking(config, json_result):
@@ -50,6 +55,7 @@ def toMasking(config, json_result):
         result = DB.executeSql("update " + tableName + " set " + tableCol + " = '"  + masking_other[0]+"'")
     else:
         result = masking_tosql(config, json_result)
+    DB.close()
     return result
 
 def masking_tosql(config, json_result):
@@ -78,5 +84,5 @@ def masking_tosql(config, json_result):
     DB.executeSql( "update %s set %s = CASE %s %s END where %s in (%s)" % (tableName, tableCol, masking_key,whenstr,masking_key, instr[0:-1]) )
     # DB.executeSql( "update \"TEST_MOBILE\" set \"MOBILE_NUM\" = CASE \"ID\" WHEN 1 THEN '13888888888' END where \"ID\" in (1)" )
     # DB.executeSql( "update TEST_MOBILE set MOBILE_NUM = '13888888888'")
-
+    DB.close()
     return result
