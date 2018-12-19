@@ -50,12 +50,13 @@ class Masking(object):
                 district = node[14:].strip()
                 code = node[0:6]
                 codelist.append({"state":state,"city":city,"district":district,"code":code})
+
     # 随机生成身份证号
     def getGennerator(cls, arr):
         global codelist
         if not codelist:
             cls.getdistrictcode()
-        id = codelist[random.randint( 0, len( codelist ) )]['code']  # 地区项
+        id = codelist[random.randint( 0, len( codelist )-1 )]['code']  # 地区项
         id = id + str( random.randint( 1930, 2013 ) )  # 年份项
         da = date.today() + timedelta( days=random.randint( 1, 366 ) )  # 月份和日期项
         id = id + da.strftime( '%m%d' )
