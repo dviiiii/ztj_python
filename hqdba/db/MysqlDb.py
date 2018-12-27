@@ -10,7 +10,6 @@ class MysqlDb(object):
             self.cursor = self.conn.cursor(pymysql.cursors.DictCursor)
 
     def executeSql(self, sql):
-        print(sql)
         db = self.conn
         # 使用cursor()方法获取操作游标 pymysql.cursors.DictCursor
         cursor = self.cursor

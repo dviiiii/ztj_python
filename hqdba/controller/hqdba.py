@@ -92,3 +92,17 @@ def toMasking(request):
     data["list"] = tbs
 
     return JsonResponse( data )
+
+#########################################特殊脱敏###############################################
+# 001
+# NC财务数据脱敏
+# 脱敏规则：将PK_VOUCHER表中的TOTALCREDIT,TOTALDEBIT以及gl_detail表中
+# 的LOCALCREDITAMOUNT，CREDITAMOUNT，LOCALDEBITAMOUNT，DEBITAMOUNT
+# 字段进行脱敏操作。
+
+
+def other_mask_01(request):
+    global config_temp
+    tbs = hqdbaApi.other_mask_01(config_temp)
+
+    return JsonResponse( {"msg":0} )

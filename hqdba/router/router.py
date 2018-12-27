@@ -13,6 +13,7 @@ urlpatterns = [
     path('hqdba/queryOneTableCol', hqdba.queryOneTableCol, name='queryOneTableCol'),
     path('hqdba/queryOneTable', hqdba.queryOneTable, name='queryOneTable'),
     path('hqdba/toMasking', hqdba.toMasking, name='toMasking'),
+    path('hqdba/other_mask_01', hqdba.other_mask_01, name='other_mask_01'),
 
     path('online/book/addBook', book.addBook, name='addBook'),
     # path( '<int:question_id>/', login.detail, name='detail' ),
