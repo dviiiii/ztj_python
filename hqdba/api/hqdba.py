@@ -97,16 +97,21 @@ def other_mask_01(config):
     DB = db.Db(config).strategy
     Masking = ms.Masking()
 
-    count = DB.executeSql("select count(*) from gl_voucher")
-    # count = 10000
-    pageSize = 1000
+    count = DB.executeSql("select count(*) as count from gl_voucher")
+    print(count)
+    count = count[0]["count"]
+    pageSize = 100
     pageSum = int((count+pageSize-1)/pageSize)
     print("开始NC财务数据脱敏:共%s条待处理" % count)
     starttime = datetime.datetime.now()
 
     for page in range(pageSum):
-
-        main_data = DB.executeSql("select  PK_VOUCHER,TOTALCREDIT,TOTALDEBIT from gl_voucher ORDER BY PK_VOUCHER DESC LIMIT %s,%s;" %(page*pageSize+1, pageSize))
+        # ORDER
+        # BY
+        # PK_VOUCHER
+        # # DESC
+        temptimeB = datetime.datetime.now()
+        main_data = DB.executeSql("select  PK_VOUCHER,TOTALCREDIT,TOTALDEBIT from gl_voucher  LIMIT %s,%s;" %(page*pageSize+1, pageSize))
         main_whenstr = ""
         main_instr = ""
         dai_whenstr = ""
@@ -198,7 +203,7 @@ def other_mask_01(config):
             "gl_detail", "DEBITAMOUNT", "PK_DETAIL", jie_whenstr, "PK_DETAIL", jie_instr[0:-1]))
 
         temptime = datetime.datetime.now()
-        print("已处理%s条，待处理%s条，已用时%s秒！" %(pageSize*(page+1), count-pageSize*(page+1), (temptime-starttime).seconds))
+        print("已处理%s条，待处理%s条，此次用时%s秒！" %(pageSize*(page+1), count-pageSize*(page+1), (temptime-temptimeB).seconds))
 
         # print("主表SQL：update %s set %s = CASE %s %s END where %s in (%s)" % (
         # "gl_voucher", "TOTALCREDIT", "PK_VOUCHER", main_whenstr, "PK_VOUCHER", main_instr[0:-1]))

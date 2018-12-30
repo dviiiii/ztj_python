@@ -103,6 +103,6 @@ def toMasking(request):
 
 def other_mask_01(request):
     global config_temp
-    tbs = hqdbaApi.other_mask_01(config_temp)
+    hqdbaApi.other_mask_01(config_temp)
 
-    return JsonResponse( {"msg":0} )
+    # return JsonResponse( {"msg":0} )
