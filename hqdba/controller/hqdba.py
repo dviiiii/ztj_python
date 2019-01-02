@@ -44,6 +44,14 @@ def queryConfig(request):
 
     return JsonResponse( data )
 
+def removeConfig(request):
+    json_result = json.loads( request.body )
+    data = {}
+    result = hqdbaApi.removeConfig(json_result["id"])
+    data["list"] = result
+
+    return JsonResponse( data )
+
 # 查询选择的实例中所有的表
 def queryAllTables(request):
     json_result = json.loads( request.body )
@@ -101,8 +109,18 @@ def toMasking(request):
 # 字段进行脱敏操作。
 
 
-def other_mask_01(request):
+def mask_01_toMasking(request):
     global config_temp
-    hqdbaApi.other_mask_01(config_temp)
+    json_result = json.loads(request.body)
+    data = {}
+    count = json_result["count"]
+    data["list"] = hqdbaApi.mask_01_toMasking(config_temp, count)
 
-    # return JsonResponse( {"msg":0} )
+    return JsonResponse( data )
+
+def mask_01_queryNum(request):
+    global config_temp
+    data = {}
+    data["list"] = hqdbaApi.mask_01_queryNum(config_temp)
+
+    return JsonResponse( data )

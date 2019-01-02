@@ -9,11 +9,14 @@ urlpatterns = [
     path('test/', hqdba.test, name='test'),
     path('hqdba/addConfig', hqdba.addConfig, name='addConfig'),
     path('hqdba/queryConfig', hqdba.queryConfig, name='queryConfig'),
+    path('hqdba/removeConfig', hqdba.removeConfig, name='removeConfig'),
     path('hqdba/queryAllTables', hqdba.queryAllTables, name='queryAllTables'),
     path('hqdba/queryOneTableCol', hqdba.queryOneTableCol, name='queryOneTableCol'),
     path('hqdba/queryOneTable', hqdba.queryOneTable, name='queryOneTable'),
+
     path('hqdba/toMasking', hqdba.toMasking, name='toMasking'),
-    path('hqdba/other_mask_01', hqdba.other_mask_01, name='other_mask_01'),
+    path('hqdba/mask_01_queryNum', hqdba.mask_01_queryNum, name='mask_01_queryNum'),
+    path('hqdba/mask_01_toMasking', hqdba.mask_01_toMasking, name='mask_01_toMasking'),
 
     path('online/book/addBook', book.addBook, name='addBook'),
     # path( '<int:question_id>/', login.detail, name='detail' ),
