@@ -111,7 +111,6 @@ def mask_01_toMasking(config, count):
 
     pageSize = 100
 
-    print("开始NC财务数据脱敏")
     starttime = datetime.datetime.now()
 
     main_data = DB.executeSql("select  PK_VOUCHER,TOTALCREDIT,TOTALDEBIT from gl_voucher  LIMIT %s,%s;" %((count-1)*pageSize+1, pageSize))
