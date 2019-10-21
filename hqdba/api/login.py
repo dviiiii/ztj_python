@@ -1,7 +1,7 @@
 import hqdba.db.Db as db
 
-def queryPassword(pw):
+def queryPassword(username):
     DB = db.Db().strategy
-    a = DB.executeSql("select * from hqdba_user")
+    a = DB.executeSql("select user_password from system_user where user_name = '%s'" % username)
     DB.close()
     return a

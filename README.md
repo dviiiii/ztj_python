@@ -3,7 +3,7 @@
 python -m django --version
 ```
 
-> 创建对象
+> 创建对象（项目）
 ```shell
  django-admin startproject mysite
 ```
