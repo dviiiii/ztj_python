@@ -1,16 +1,18 @@
 import json
 import hqdba.api.hqdba as hqdbaApi
-import hqdba.api.online as onlineApi
+import hqdba.api.book as bookApi
 
 
 from django.http import JsonResponse
+
+from hqdba.lib.token import Auth
 
 
 def addBook(request):
     username = 'admin'
     params = json.loads(request.body)
     print(params)
-    bookIsRepeat = onlineApi.bookIsRepeat(username, params["bookName"])
+    bookIsRepeat = bookApi.bookIsRepeat(username, params["bookName"])
     if bookIsRepeat !=0:
         return JsonResponse({"status": 1, "msg": "书籍已存在！"})
     else:
@@ -20,7 +22,7 @@ def addBook(request):
             "booknumber": params["bookNumber"],
             "readtype": params["readType"]
         }
-        result = onlineApi.addBook(filed)
+        result = bookApi.addBook(filed)
         msg = "书籍新增成功！" if result == 0 else "书籍新增失败！"
         return JsonResponse( {"status": result,"msg": msg} )
 
@@ -34,10 +36,12 @@ def addConfig(request):
 
     return JsonResponse( {"msg": status} )
 
-def queryConfig(request):
-    # json_result = json.loads( request.body )
+def getBookList(request):
+    token = request.META['HTTP_X_ACCESS_TOKEN']
+    json_result = Auth.decode_auth_token(token)
+    user_name = json_result['data']['id']
     data = {}
-    result = hqdbaApi.queryConfig()
+    result = bookApi.queryBookList(user_name)
     data["list"] = result
 
     return JsonResponse( data )

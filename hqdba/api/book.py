@@ -14,13 +14,12 @@ def addBook(params):
     DB.close()
     return result
 
-#查询数据库实例配置
-def queryConfig(id = None):
+def queryBookList(user_name):
     DB = db.Db().strategy
     where_sql = ' where 1=1 '
-    if id != None:
-        where_sql = where_sql + ' and id = ' + id
-    result = DB.executeSql("select * from hqdba_db_config" + where_sql)
+    if user_name != None:
+        where_sql = where_sql + ' and user_name = "' + user_name + '"'
+    result = DB.executeSql("select * from ol_book_info" + where_sql)
     DB.close()
     return result
 
