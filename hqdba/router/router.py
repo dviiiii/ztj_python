@@ -21,8 +21,11 @@ urlpatterns = [
     path('hqdba/mask_01_queryNum', hqdba.mask_01_queryNum, name='mask_01_queryNum'),
     path('hqdba/mask_01_toMasking', hqdba.mask_01_toMasking, name='mask_01_toMasking'),
 
-    path('online/book/addBook', book.addBook, name='addBook'),
+    path('book/addbook', book.addBook, name='addBook'),
     path('book/booklist', book.getBookList, name='getBookList'),
+    path('book/getreviewinfo', book.getReviewInfo, name='getReviewInfo'),
+    path('book/deletebook', book.deleteBook, name='deleteBook'),
+    path('book/addreadinfo', book.addReadInfo, name='addReadInfo'),
     # path( '<int:question_id>/', login.detail, name='detail' ),
     # # ex: /polls/5/results/
     # path( '<int:question_id>/results/', login.results, name='results' ),
