@@ -26,6 +26,7 @@ class Rank:
                 :param user_name: str
                 :return: dict
                 """
+        print(user_name)
         try:
             DB = db.Db().strategy
             sql = "SELECT rank from ol_user_info WHERE user_name = '%s' " % (user_name)

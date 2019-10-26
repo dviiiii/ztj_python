@@ -1,5 +1,4 @@
 import json
-import hqdba.api.hqdba as hqdbaApi
 import hqdba.api.book as bookApi
 import time, datetime
 from hqdba.controller.rank import Rank
@@ -21,7 +20,7 @@ def getBookList(request):
     return JsonResponse(data)
 
 
-# 根据表名查询表字段
+# 获取复习信息
 def getReviewInfo(request):
     token = request.META['HTTP_X_ACCESS_TOKEN']
     json_result = Auth.decode_auth_token(token)
@@ -34,6 +33,7 @@ def getReviewInfo(request):
     return JsonResponse(data)
 
 
+#增加书籍
 def addBook(request):
     token = request.META['HTTP_X_ACCESS_TOKEN']
     json_result = Auth.decode_auth_token(token)
@@ -56,6 +56,7 @@ def addBook(request):
         return JsonResponse({"status": result, "msg": msg})
 
 
+# 删除书籍
 def deleteBook(request):
     token = request.META['HTTP_X_ACCESS_TOKEN']
     json_result = Auth.decode_auth_token(token)
@@ -85,12 +86,14 @@ def addReadInfo(request):
         status = '新增成功！'
 
         Rank.addRank(user_name, json_result['reading_rank'])
+        updateProgess(json_result)
     except:
         status = '新增失败！'
 
     return JsonResponse({"msg": status})
 
 
+# 复习时间
 def review_date():
     now_time = datetime.datetime.now()
     one_time = now_time + datetime.timedelta(days=-1)
@@ -110,3 +113,65 @@ def review_date():
 
     dateList = [one_time_nyr, two_time_nyr, four_time_nyr, seven_time_nyr, fifteen_time_nyr]
     return dateList
+
+# 更新进度
+def updateProgess(params):
+    progess = getProgess(params)
+    nowProgess = len(progess)
+    maxProgess = params['pagenumber']
+    result = nowProgess*100/maxProgess
+    bookApi.updateProgess(params['bookid'], result)
+
+    return True
+
+
+def getProgessInfo(request):
+    token = request.META['HTTP_X_ACCESS_TOKEN']
+    json_result = Auth.decode_auth_token(token)
+    user_name = json_result['data']['id']
+
+    json_result = json.loads(request.body)
+    arr = getProgess({'bookid': json_result['id']})
+
+    return JsonResponse({"list": arr})
+# 得到进度list
+def getProgess(params):
+    arr = []
+    bookReadInfo = bookApi.queryBookReadingInfo(params['bookid'])
+    for i in bookReadInfo:
+        begin_page = i['begin_page']
+        end_page = i['end_page']
+        for num in range(begin_page, end_page + 1):
+            if num not in arr:
+                arr.append(num)
+
+    return arr
+
+# 确认已复习
+def checkReview(request):
+    try:
+        token = request.META['HTTP_X_ACCESS_TOKEN']
+        json_result = Auth.decode_auth_token(token)
+        user_name = json_result['data']['id']
+
+        json_result = json.loads(request.body)
+        r_date = {
+            '0': 1,
+            '1': 2,
+            '2': 4,
+            '3': 7,
+            '4': 15
+        }
+        num = json_result['num']
+        fixnum = -r_date[num]
+        now_time = datetime.datetime.now()
+        fix_time = now_time + datetime.timedelta(days=fixnum)
+        fixday = fix_time.strftime('%Y-%m-%d')
+
+        bookApi.checkReview(fixday, json_result['id'])
+        Rank.addRank(user_name, 10)
+        status = 0
+    except:
+        status = 1
+
+    return JsonResponse({"status": status})

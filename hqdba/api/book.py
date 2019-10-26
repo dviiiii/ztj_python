@@ -32,13 +32,14 @@ def getReviewInfo(user_name, review_date):
     DB.close()
     return result
 
+# 新增书籍
 def addBook(params):
     DB = db.Db().strategy
     result = DB.insert_data("ol_book_info", params)
     DB.close()
     return result
 
-
+# 验证书籍是否重复
 def bookIsRepeat(username, bookname):
     DB = db.Db().strategy
 
@@ -55,54 +56,36 @@ def deleteBook(params, user_name):
     DB.close()
     return result
 
+# 增加阅读记录
 def addReadInfo(params, user_name):
     DB = db.Db().strategy
-    print(params)
+    sql = "insert into ol_book_reading(book_id, begin_page, end_page,create_date) values(%s, %s, %s, '%s')" % (params['bookid'], params['bookPageNumberS'], params['bookPageNumberE'], params['today'])
+    print(sql)
 
-    result = DB.executeSql("insert into ol_book_reading(book_id, begin_page, end_page,create_date) values(%s, %s, %s, %s)" % (params['bookid'], params['bookPageNumberS'], params['bookPageNumberE'], params['today']))
+    result = DB.executeSql(sql)
     DB.close()
     return result
 
-def toMasking(config, json_result):
-    DB = db.Db(config).strategy
-    tableName = json_result["tableName"]
-    tableCol = json_result["tableCol"]
-    masking_type = json_result["masking_type"]
-    masking_other = json_result["masking_other"]
-    print(json_result)
-    result = []
-    if masking_type == "getFixedValue":
-        result = DB.executeSql("update " + tableName + " set " + tableCol + " = '"  + masking_other[0]+"'")
-    else:
-        result = masking_tosql(config, json_result)
+
+#查询某本书的读书记录
+def queryBookReadingInfo(book_id):
+    DB = db.Db().strategy
+    result = DB.executeSql("select begin_page,end_page from ol_book_reading where book_id = %s and is_delete=0" % book_id)
     DB.close()
     return result
 
-def masking_tosql(config, json_result):
-    DB = db.Db( config ).strategy
-    Masking = ms.Masking()
-    tableName = json_result["tableName"]
-    tableCol = json_result["tableCol"]
-    masking_key = json_result["masking_key"]
-    masking_type = json_result["masking_type"]
-    masking_other = json_result["masking_other"]
-    if not masking_other:
-        masking_other = []
-    result = DB.executeSql("select %s from %s" % (masking_key,tableName))
 
-    whenstr = ""
-    instr = ""
-    for i in result:
-        new_value = getattr(Masking, masking_type)(masking_other)
-        id = (i[masking_key])
-        print(type(id) == int)
-        if type(id) != int:
-            id = str(id)
-        whenstr += "WHEN %s THEN '%s' " % (id, new_value)
-        instr += str(id) + ","
+# 更新读书进度
+def updateProgess(book_id, pro):
+    DB = db.Db().strategy
+    result = DB.executeSql("update ol_book_info set book_status= %s where id= %s" % (pro, book_id))
+    DB.close()
+    return result
 
-    DB.executeSql( "update %s set %s = CASE %s %s END where %s in (%s)" % (tableName, tableCol, masking_key,whenstr,masking_key, instr[0:-1]) )
-    # DB.executeSql( "update \"TEST_MOBILE\" set \"MOBILE_NUM\" = CASE \"ID\" WHEN 1 THEN '13888888888' END where \"ID\" in (1)" )
-    # DB.executeSql( "update TEST_MOBILE set MOBILE_NUM = '13888888888'")
+# 更新复习信息
+def checkReview(fixday, book_id):
+    DB = db.Db().strategy
+    sql = "UPDATE ol_book_reading SET review_num = review_num+1,create_date='%s' WHERE id = %s" % (fixday, book_id)
+    result = DB.executeSql(sql)
     DB.close()
     return result
