@@ -3,6 +3,7 @@ from django.urls import path
 import  hqdba.controller.user as user
 import  hqdba.controller.hqdba as hqdba
 import  hqdba.controller.book as book
+import  hqdba.controller.task as task
 
 urlpatterns = [
     path('login/', user.index, name='index'),
@@ -32,10 +33,10 @@ urlpatterns = [
 
     # ************************BOOK END************************
 
-    # ************************RANK BEGIN************************
-
-
-    # ************************RANK END************************
+    # ************************TASK BEGIN************************
+    path('task/addtask', task.addTask, name='addTask'),
+    path('task/querytask', task.queryTask, name='queryTask'),
+    # ************************TASK END************************
     # path( '<int:question_id>/', login.detail, name='detail' ),
     # # ex: /polls/5/results/
     # path( '<int:question_id>/results/', login.results, name='results' ),
