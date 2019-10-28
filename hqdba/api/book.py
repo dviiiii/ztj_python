@@ -7,7 +7,8 @@ def queryBookList(user_name):
     DB = db.Db().strategy
     where_sql = ' where 1=1 '
     if user_name is not None:
-        where_sql = where_sql + ' and user_name = "' + user_name + '" and is_delete = 0'
+        where_sql = where_sql + ' and user_name = "' + user_name + '" and is_delete = 0 and book_status != 100'
+    print(where_sql)
     result = DB.executeSql("select * from ol_book_info" + where_sql)
     DB.close()
     return result
