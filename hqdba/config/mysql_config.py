@@ -19,3 +19,15 @@ def default_config1():
         'HOST': '47.111.120.34',
         'PORT': '3306',
     }
+
+def default_config2():
+    return {
+        'ENGINE': 'django.db.backends.mysql',
+        'db_name': 'justfh',
+        'db_type': 'mysql',
+        'db_user': 'root',
+        'db_password': '123456',
+        'db_host': '192.168.31.100',
+        'db_port': '3306',
+        'db_sid': ''
+    }

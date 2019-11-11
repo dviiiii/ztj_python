@@ -4,6 +4,7 @@ import  hqdba.controller.user as user
 import  hqdba.controller.hqdba as hqdba
 import  hqdba.controller.book as book
 import  hqdba.controller.task as task
+import hqdba.controller.emmm as emmm
 
 urlpatterns = [
     path('login/', user.index, name='index'),
@@ -42,4 +43,6 @@ urlpatterns = [
     # path( '<int:question_id>/results/', login.results, name='results' ),
     # # ex: /polls/5/vote/
     # path( '<int:question_id>/vote/', login.vote, name='vote' ),
+    path('emmm/get_emmm_list', emmm.get_emmm_list, name='get_emmm_list'),
+    path('emmm/get_emmm_target', emmm.get_emmm_target, name='get_emmm_target'),
 ]
