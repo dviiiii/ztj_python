@@ -37,6 +37,7 @@ urlpatterns = [
     # ************************TASK BEGIN************************
     path('task/addtask', task.addTask, name='addTask'),
     path('task/querytask', task.queryTask, name='queryTask'),
+    path('task/completetask', task.completeTask, name='completeTask'),
     # ************************TASK END************************
     # path( '<int:question_id>/', login.detail, name='detail' ),
     # # ex: /polls/5/results/

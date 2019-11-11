@@ -38,8 +38,8 @@ class Task:
         print(user_name)
         try:
             DB = db.Db().strategy
-            sql = "SELECT * from ol_task WHERE user_name = '%s' and  task_create_time > '%s' and task_create_time < '%s' and is_delete = 0" \
-                  % (user_name, params['begin'], params['end'])
+            sql = "SELECT * from ol_task WHERE user_name = '%s' and task_status = '%s' and  task_create_time > '%s' and task_create_time < '%s' and is_delete = 0" \
+                  % (user_name, params['task_status'], params['begin'], params['end'])
             result = DB.executeSql(sql)
             DB.close()
             return result
@@ -74,6 +74,24 @@ class Task:
         try:
             DB = db.Db().strategy
             sql = "SELECT rank from ol_user_info WHERE user_name = '%s' " % (user_name)
+            result = DB.executeSql(sql)
+            DB.close()
+            return result
+        except Exception as e:
+            return e
+
+    @staticmethod
+    def completeTask(user_name, params):
+        """
+                完成任务
+                :param user_name: str
+                :return: dict
+                """
+        print(user_name)
+        try:
+            DB = db.Db().strategy
+            sql = "UPDATE ol_task SET task_status='1' , task_complete_time='%s' where id='%s';" % (params['complete_time'], params['id'] )
+            print(sql)
             result = DB.executeSql(sql)
             DB.close()
             return result

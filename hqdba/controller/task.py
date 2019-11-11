@@ -42,3 +42,20 @@ def queryTask(request):
     data["list"] = result
 
     return JsonResponse(data)
+
+# 完成任务
+def completeTask(request):
+    token = request.META['HTTP_X_ACCESS_TOKEN']
+    json_result = Auth.decode_auth_token(token)
+    user_name = json_result['data']['id']
+
+    params = json.loads(request.body)
+    print(params)
+    params['complete_time'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    result = Task.completeTask(user_name, params)
+    data = {}
+
+    data["list"] = result
+    print(data)
+
+    return JsonResponse(data)
