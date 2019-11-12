@@ -38,8 +38,12 @@ class Task:
         print(user_name)
         try:
             DB = db.Db().strategy
-            sql = "SELECT * from ol_task WHERE user_name = '%s' and task_status = '%s' and  task_create_time > '%s' and task_create_time < '%s' and is_delete = 0" \
-                  % (user_name, params['task_status'], params['begin'], params['end'])
+            wheresql = ' 1=1 '
+            if params['task_status'] != '-1':
+                wheresql += 'and task_status = ' + params['task_status']
+            sql = "SELECT * from ol_task WHERE user_name = '%s' and task_create_time > '%s' and task_create_time < '%s' and is_delete = 0 and  %s" \
+                  % (user_name, params['begin'], params['end'], wheresql)
+            print(sql)
             result = DB.executeSql(sql)
             DB.close()
             return result
