@@ -14,6 +14,7 @@ python -m django --version
 ```
 
 
+
 > 创建应用
 ```shell
  python manage.py startapp hqdba
@@ -44,6 +45,18 @@ python -m django --version
  1.编辑 models.py 文件，改变模型。
  2.运行 python manage.py makemigrations 为模型的改变生成迁移文件。
  3.运行 python manage.py migrate 来应用数据库迁移。
+```
+
+> 通过uwsgi启动django服务
+```sh
+#启动uwsgi
+uwsgi --ini uwsgi.ini
+
+#重启nginx
+sudo service nginx restart
+
+#启动django服务
+sudo uwsgi --reload /var/run/my_project.pid
 ```
 
 
