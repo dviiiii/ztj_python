@@ -12,7 +12,7 @@ cx-Oracle==7.0.0
 Django==2.1.4
 idna==2.8
 jwt==0.6.1
-lxml==4.4.2
+lxml==4.6.2
 multidict==4.6.1
 mysqlclient==1.4.4
 Pillow==6.2.1
